@@ -6,8 +6,8 @@ COPY . .
 
 RUN npm install
 
-RUN chmod +x run.sh
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["./run.sh"]
+CMD ["npm", "run", "dev"]

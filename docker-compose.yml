@@ -82,6 +82,9 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+    command: >
+      sh -c "npm install && npm run build && npm run start"
+
     depends_on:
       backend:
         condition: service_healthy
