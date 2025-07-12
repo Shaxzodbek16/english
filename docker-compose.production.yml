@@ -39,8 +39,6 @@ services:
       - backend/.env
     volumes:
       - ./backend:/app
-      - ./backend/media:/app/media
-      - ./backend/static:/app/static
     ports:
       - "8000:8000"
     depends_on:
@@ -64,8 +62,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-      frontend:
-        condition: service_healthy
       postgres:
         condition: service_healthy
       redis:
@@ -81,6 +77,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - frontend/.env
+    restart: always
     ports:
       - "3000:3000"
     volumes:
@@ -89,11 +86,6 @@ services:
       backend:
         condition: service_healthy
     command: npm start
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   nginx:
     image: nginx:1.27.5
