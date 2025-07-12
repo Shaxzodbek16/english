@@ -7,7 +7,7 @@ RUN npm install -g npm@latest && npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run build --no-cache
 
 EXPOSE 3000
 
