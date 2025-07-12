@@ -85,7 +85,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    command: npm start
 
   nginx:
     image: nginx:1.27.5
