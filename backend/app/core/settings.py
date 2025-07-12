@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     def API_V1_STR(self, version: str = "v1") -> str:
         return f"/api/{version}"
 
+    @property
+    def ADMINS_TG_IDS(self) -> set[int]:
+        return {
+            6521856185,
+        }
+
 
 @cache
 def get_settings() -> Settings:

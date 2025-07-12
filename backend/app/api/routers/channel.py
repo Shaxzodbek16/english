@@ -9,18 +9,10 @@ from app.api.schemas import (
     UpdateChannelSchema,
     ChannelResponseSchema,
 )
-from app.api.utils.jwt_handler import get_current_user
+from app.api.utils.admin_filter import check_admin
 from app.core.settings import get_settings
 
 settings = get_settings()
-
-
-async def check_admin(
-    user: User = Depends(get_current_user),
-    channel_controller: ChannelController = Depends(),
-):
-    await channel_controller.check_admin(user)
-
 
 router = APIRouter(
     prefix="/channel",

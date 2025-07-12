@@ -1,1 +1,3 @@
 from .channel_controller import ChannelController
+from .user_controller import UserController
+from .authentication_controller import AuthenticationController

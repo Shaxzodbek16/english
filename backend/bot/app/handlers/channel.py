@@ -59,19 +59,27 @@ class ChannelRepository:
         return result.scalars().all()
 
     async def get_expired_channels(self) -> Sequence[Channel]:
-        stmt = select(Channel).where(Channel.is_active == True, Channel.till < datetime.utcnow())
+        stmt = select(Channel).where(
+            Channel.is_active == True, Channel.till < datetime.utcnow()
+        )
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
-    async def fetch_unsubscribed_channels(self, user_id: int, bot: Bot) -> Sequence[Channel]:
+    async def fetch_unsubscribed_channels(
+        self, user_id: int, bot: Bot
+    ) -> Sequence[Channel]:
         unsubscribed_channels = []
-        stmt = select(Channel).where(Channel.is_active == True, Channel.till > datetime.utcnow())
+        stmt = select(Channel).where(
+            Channel.is_active == True, Channel.till > datetime.utcnow()
+        )
         result = await self.session.execute(stmt)
         all_channels = result.scalars().all()
 
         for channel in all_channels:
             try:
-                member = await bot.get_chat_member(chat_id=channel.channel_id, user_id=user_id)
+                member = await bot.get_chat_member(
+                    chat_id=channel.channel_id, user_id=user_id
+                )
                 if member.status not in ("member", "administrator", "creator"):
                     unsubscribed_channels.append(channel)
             except (TelegramBadRequest, TelegramForbiddenError):

@@ -11,7 +11,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
   postgres:
     image: postgres:17-alpine
     restart: always
@@ -39,6 +39,8 @@ services:
       - backend/.env
     volumes:
       - ./backend:/app
+      - ./backend/media:/app/media
+      - ./backend/static:/app/static
     ports:
       - "8000:8000"
     depends_on:
@@ -51,7 +53,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/v1/healthcheck || exit 1" ]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
 
   bot:
     build:
@@ -60,12 +62,57 @@ services:
     env_file:
       - backend/.bot.env
     depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     restart: always
     volumes:
       - ./backend/bot/logs:/app/logs
 
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - frontend/.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: npm start
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:1.27.5
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend/static:/app/static
+      - ./backend/media:/app/media
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/live/english.shaxzodbek.com/fullchain.pem:/etc/letsencrypt/live/english.shaxzodbek.com/fullchain.pem
+      - /etc/letsencrypt/live/english.shaxzodbek.com/privkey.pem:/etc/letsencrypt/live/english.shaxzodbek.com/privkey.pem
+    depends_on:
+      backend:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 volumes:
   postgres_data:
   redis_data:

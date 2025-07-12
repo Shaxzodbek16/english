@@ -18,9 +18,9 @@ class User(TimestampMixin):
         BigInteger, nullable=False, index=True, unique=True
     )
     language: Mapped[str] = mapped_column(
-        String(2), nullable=False, default="en", index=True
+        String(10), nullable=False, default="en", index=True
     )
-    phone_number: Mapped[int] = mapped_column(BigInteger, nullable=True, index=True)
+    phone_number: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
     profile_picture: Mapped[str | None] = mapped_column(
         String(255),
         nullable=True,

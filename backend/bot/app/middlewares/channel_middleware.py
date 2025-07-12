@@ -12,10 +12,10 @@ from bot.app.keyboards.channel_sub import get_channel_keyboard
 
 class CheckSubscriptionMiddleware(BaseMiddleware):
     async def __call__(
-            self,
-            handler: Callable[[Any, Dict[str, Any]], Awaitable[Any]],
-            event: Union[Message, CallbackQuery],
-            data: Dict[str, Any],
+        self,
+        handler: Callable[[Any, Dict[str, Any]], Awaitable[Any]],
+        event: Union[Message, CallbackQuery],
+        data: Dict[str, Any],
     ) -> Any:
         bot = data["bot"]
         user_id = event.from_user.id
@@ -24,7 +24,8 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
             user_repo = UserRepository(session)
             admins = await user_repo.get_admins()
             admins_id = {admin.telegram_id for admin in admins}
-        if user_id in admins_id: return await handler(event, data)
+        if user_id in admins_id:
+            return await handler(event, data)
         if isinstance(event, Message):
             text = event.text or ""
             if text.startswith("/help") or text.startswith("/start"):

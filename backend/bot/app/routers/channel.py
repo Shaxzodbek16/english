@@ -9,8 +9,6 @@ from bot.core.databases.postgres import get_session
 channel_router = Router()
 
 
-
-
 @channel_router.callback_query(F.data == "check_subscription")
 async def handle_check_subscription(callback_query: CallbackQuery):
     user_id = callback_query.from_user.id

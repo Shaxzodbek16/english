@@ -42,21 +42,16 @@ class JWTHandler:
             payload, self.__settings.SECRET_KEY, algorithm=self.__settings.ALGORITHM
         )
 
-    def create_access_token(
-        self, data: dict, expires_delta: timedelta | None = None
-    ) -> str:
+    def create_access_token(self, data: dict) -> str:
         return self._create_token(
             data,
-            expires_delta
-            or timedelta(minutes=self.__settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+            timedelta(minutes=self.__settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
 
-    def create_refresh_token(
-        self, data: dict, expires_delta: timedelta | None = None
-    ) -> str:
+    def create_refresh_token(self, data: dict) -> str:
         return self._create_token(
             data,
-            expires_delta or timedelta(days=self.__settings.REFRESH_TOKEN_EXPIRE_DAYS),
+            timedelta(days=self.__settings.REFRESH_TOKEN_EXPIRE_DAYS),
         )
 
     def decode_token(self, token: str) -> dict:
