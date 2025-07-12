@@ -1,5 +1,16 @@
-node_modules/*
-Dockerfile
-.dockerignore
+# Node modules (should be reinstalled inside container)
+node_modules
+
+# Logs
 *.log
-.next/*
+npm-debug.log*
+
+# Builds
+.next
+dist
+
+
+# System files
+.DS_Store
+.vscode
+.idea

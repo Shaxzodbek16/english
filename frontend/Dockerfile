@@ -1,13 +1,13 @@
-FROM node:24-alpine
+FROM node:24
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install -g npm@latest && npm install
+RUN npm install
 
 COPY . .
 
-RUN npm run build --no-cache
+RUN npm run build
 
 EXPOSE 3000
 
