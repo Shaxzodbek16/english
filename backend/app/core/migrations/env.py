@@ -5,18 +5,15 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-from app.core.models.base import Base
+from app.core.models.base import Base, TimestampMixin
+from app.api.models import *
 from app.core.settings import get_settings, Settings
 
 settings: Settings = get_settings()
 
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 config = context.config
-
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 

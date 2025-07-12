@@ -8,6 +8,7 @@ from app.api.routers import main_router
 def get_ready() -> None:
     os.makedirs("media/", exist_ok=True)
     os.makedirs("static/", exist_ok=True)
+    os.makedirs("static/profile", exist_ok=True)
 
 
 def get_app() -> FastAPI:
@@ -15,7 +16,7 @@ def get_app() -> FastAPI:
     app = FastAPI(
         title="EnglishAI",
         description="An AI-powered English learning platform",
-        version="1.0.0"
+        version="1.0.0",
     )
     app.include_router(main_router)
     return app

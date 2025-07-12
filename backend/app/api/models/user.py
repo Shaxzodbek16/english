@@ -6,14 +6,26 @@ from datetime import datetime, UTC
 from app.core.models.base import TimestampMixin
 from app.core.settings import get_settings, Settings
 
+settings: Settings = get_settings()
+
 
 class User(TimestampMixin):
+    __tablename__ = "users"
+
     first_name: Mapped[str] = mapped_column(String(255), nullable=False)
     last_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    telegram_id: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True, unique=True)
-    language: Mapped[str] = mapped_column(String(2), nullable=False, default="en", index=True)
-    phone_number: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
-    profile_picture: Mapped[str | None] = mapped_column(String(255), nullable=True, default=None)
+    telegram_id: Mapped[int] = mapped_column(
+        BigInteger, nullable=False, index=True, unique=True
+    )
+    language: Mapped[str] = mapped_column(
+        String(2), nullable=False, default="en", index=True
+    )
+    phone_number: Mapped[int] = mapped_column(BigInteger, nullable=True, index=True)
+    profile_picture: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+        default=f"{settings.BASE_URL}/static/profile/default.jpg",
+    )
     is_admin: Mapped[bool] = mapped_column(default=False, nullable=False, index=True)
 
     def update(self, data: dict) -> "User":
@@ -29,3 +41,11 @@ class User(TimestampMixin):
 
     def __str__(self) -> str:
         return self.__repr__()
+
+    def to_dict_for_token(self) -> dict:
+        return {
+            "id": self.id,
+            "telegram_id": self.telegram_id,
+            "phone_number": self.phone_number,
+            "is_admin": self.is_admin,
+        }

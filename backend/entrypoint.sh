@@ -2,4 +2,4 @@
 
 export PYTHONPATH="$(pwd)"
 
-python app/server/main.py
+python bot/server/main.py

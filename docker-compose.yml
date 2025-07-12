@@ -55,16 +55,16 @@ services:
 
   bot:
     build:
-      context: ./bot
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: DockerfileBot
     env_file:
-      - bot/.env
+      - backend/.bot.env
     depends_on:
-      backend:
+      postgres:
         condition: service_healthy
-    restart: unless-stopped
+    restart: always
     volumes:
-      - ./bot/logs:/app/logs
+      - ./backend/bot/logs:/app/logs
 
 volumes:
   postgres_data:
