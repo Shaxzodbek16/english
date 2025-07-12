@@ -29,28 +29,21 @@ from aiogram.types import ReactionTypeEmoji
 
 
 async def sender_function(bot: Bot, message: str):
-    async for session in get_session():
-        repo = UserRepository(session)
-        admins = await repo.get_all_users()
-
-        for admin in admins:
-            if admin.is_admin:
-                try:
-                    sent_msg = await bot.send_message(admin.telegram_id, message)
-
-                    try:
-                        await bot.set_message_reaction(
-                            chat_id=admin.telegram_id,
-                            message_id=sent_msg.message_id,
-                            reaction=[ReactionTypeEmoji(emoji="⚡")],
-                        )
-                    except Exception as reaction_error:
-                        print(f"❌ Failed to send reaction: {reaction_error}")
-
-                    await asyncio.sleep(0.3)
-                except Exception as e:
-                    print(f"❌ Failed to send message to {admin.telegram_id}: {e}")
-        break
+    admins = [6521856185]
+    for admin in admins:
+        try:
+            sent_msg = await bot.send_message(admin, message)
+            try:
+                await bot.set_message_reaction(
+                    chat_id=admin,
+                    message_id=sent_msg.message_id,
+                    reaction=[ReactionTypeEmoji(emoji="⚡")],
+                )
+            except Exception as reaction_error:
+                print(f"❌ Failed to send reaction: {reaction_error}")
+            await asyncio.sleep(0.05)
+        except Exception as e:
+            print(f"❌ Failed to send message to {admin}: {e}")
 
 
 async def send_message_to_admins(bot: Bot, message: str):
