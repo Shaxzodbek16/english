@@ -77,9 +77,9 @@ class UserListResponseSchema(PaginationSchema):
 
 
 class UserUpdateSchema(UserBase):
-    first_name: str | None = Field(default="John", description="User's first name")
-    last_name: str | None = Field(default="Doe", description="User's last name")
-    is_admin: bool | None = Field(default=False, description="User's admin status")
+    first_name: str | None = Field(default=None, description="User's first name")
+    last_name: str | None = Field(default=None, description="User's last name")
+    is_admin: bool | None = Field(default=None, description="User's admin status")
 
     model_config = ConfigDict(from_attributes=True, extra="forbid")
 

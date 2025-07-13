@@ -1,7 +1,6 @@
-from fastapi import APIRouter, status, Depends, Body
+from fastapi import APIRouter, status, Depends
 
 from app.api.controllers.channel_controller import ChannelController
-from app.api.models import User
 from app.api.schemas import (
     ChannelListResponseSchema,
     QueryParamsSchema,

@@ -5,6 +5,8 @@ from .channel import router as channel_router
 from .authentication import router as auth_router
 from .user_router import router as user_router
 from .admin_user_router import router as admin_user_router
+from .level_router import router as level_router
+from .media_router import router as media_router
 
 settings: Settings = get_settings()
 
@@ -17,5 +19,7 @@ main_router.include_router(auth_router)
 main_router.include_router(user_router)
 main_router.include_router(admin_user_router)
 main_router.include_router(healthcheck_router)
+main_router.include_router(level_router)
+main_router.include_router(media_router)
 
 __all__ = ["main_router"]

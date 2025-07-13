@@ -8,7 +8,6 @@ from app.api.routers import main_router
 def get_ready() -> None:
     os.makedirs("media/", exist_ok=True)
     os.makedirs("static/", exist_ok=True)
-    os.makedirs("static/profile", exist_ok=True)
 
 
 def get_app() -> FastAPI:

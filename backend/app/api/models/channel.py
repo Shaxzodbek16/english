@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy import String, Boolean, BigInteger, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
-from datetime import datetime, UTC
+from datetime import datetime
 
 from app.core.models.base import TimestampMixin
 
@@ -36,7 +36,7 @@ class Channel(TimestampMixin):
             return False
         return self.till < datetime.utcnow() and self.is_active
 
-    def update(self, data: dict):
+    def update(self, data: dict) -> "Channel":
         for key, value in data.items():
             if hasattr(self, key):
                 if value is not None:

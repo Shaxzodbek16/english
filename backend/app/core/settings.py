@@ -20,7 +20,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     REFRESH_TOKEN_EXPIRE_DAYS: int
 
-    model_config = SettingsConfigDict(env_file=".env")
+    # OPENAI CREDENTIALS
+    OPENAI_API_KEY: str
+
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     @property
     def get_postgres_url(self):
