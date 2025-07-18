@@ -1,7 +1,11 @@
 from __future__ import annotations
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime, UTC
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.api.models import Question
 
 from app.core.models.base import TimestampMixin
 
@@ -17,6 +21,20 @@ class Level(TimestampMixin):
     )
     type: Mapped[str] = mapped_column(
         String(50), nullable=False, default="level", index=True
+    )
+    # relations
+    level_questions: Mapped[list["Question"]] = relationship(
+        "Question",
+        back_populates="level",
+        primaryjoin="Level.id==Question.level_id",
+        cascade="all, delete-orphan",
+    )
+
+    theme_questions: Mapped[list["Question"]] = relationship(
+        "Question",
+        back_populates="theme",
+        primaryjoin="Level.id==Question.theme_id",
+        cascade="all, delete-orphan",
     )
 
     def __repr__(self):

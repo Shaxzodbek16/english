@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export PYTHONPATH="$(pwd)"
+export PYTHONPATH="$(pwd):$PYTHONPATH"
 
-python bot/server/main.py
+python app/server/bot.py

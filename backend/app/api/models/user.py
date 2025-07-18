@@ -1,7 +1,11 @@
 from __future__ import annotations
 from sqlalchemy import String, BigInteger
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime, UTC
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.api.models import UserAnswer, UserQuizResult, Setting
 
 from app.core.models.base import TimestampMixin
 from app.core.settings import get_settings, Settings
@@ -21,12 +25,19 @@ class User(TimestampMixin):
         String(10), nullable=False, default="en", index=True
     )
     phone_number: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
-    profile_picture: Mapped[str | None] = mapped_column(
-        String(255),
-        nullable=True,
-        default=f"{settings.BASE_URL}/static/profile/default.jpg",
-    )
+    profile_picture: Mapped[str | None] = mapped_column(String(255), nullable=True)
     is_admin: Mapped[bool] = mapped_column(default=False, nullable=False, index=True)
+
+    # relationships
+    answers: Mapped[list["UserAnswer"]] = relationship(
+        "UserAnswer", back_populates="user", cascade="all, delete-orphan"
+    )
+    results: Mapped[list["UserQuizResult"]] = relationship(
+        "UserQuizResult", back_populates="user", cascade="all, delete-orphan"
+    )
+    settings: Mapped[list["Setting"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
     def update(self, data: dict) -> "User":
         for key, value in data.items():

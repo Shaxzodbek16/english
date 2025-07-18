@@ -7,7 +7,7 @@ from app.api.utils.jwt_handler import get_current_user
 router = APIRouter(
     prefix="/media",
     tags=["Media Management"],
-    dependencies=[Depends(get_current_user)],
+    # dependencies=[Depends(get_current_user)], # todo: remove comment to enable authentication after testing the endpoints
 )
 
 

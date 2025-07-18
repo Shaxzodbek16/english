@@ -7,6 +7,8 @@ from .user_router import router as user_router
 from .admin_user_router import router as admin_user_router
 from .level_router import router as level_router
 from .media_router import router as media_router
+from .entertainment_router import router as entertainment_router
+from .entertainment_type_router import router as entertainment_type_router
 
 settings: Settings = get_settings()
 
@@ -21,5 +23,7 @@ main_router.include_router(admin_user_router)
 main_router.include_router(healthcheck_router)
 main_router.include_router(level_router)
 main_router.include_router(media_router)
+main_router.include_router(entertainment_router)
+main_router.include_router(entertainment_type_router)
 
 __all__ = ["main_router"]

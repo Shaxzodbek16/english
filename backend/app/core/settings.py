@@ -7,12 +7,25 @@ class Settings(BaseSettings):
     # API
     BASE_URL: str
 
+    DEBUG: bool = False
+
+    # BOT CONFIGURATION
+    BOT_TOKEN: str
+    TG_CHANNEL_ID: int
+
     # POSTGRES CREDENTIALS
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str
     POSTGRES_PORT: str
     POSTGRES_DB: str
+
+    # REDIS CREDENTIALS
+    REDIS_HOST: str
+    REDIS_PORT: str
+    REDIS_PASSWORD: str
+    REDIS_DB: int = 0
+
 
     # JWT CONFIGURATION
     SECRET_KEY: str
