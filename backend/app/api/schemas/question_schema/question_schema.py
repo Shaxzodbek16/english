@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 from datetime import datetime
 
-from .pagination import QueryParamsSchema, PaginationSchema
+from app.api.schemas.pagination import QueryParamsSchema, PaginationSchema
 
 
 class QuestionBase(BaseModel):
