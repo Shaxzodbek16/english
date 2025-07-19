@@ -30,6 +30,7 @@ class EntertainmentUpdate(EntertainmentBase):
             )
         return self
 
+
 class EntertainmentCreateSchema(EntertainmentUpdate):
     media_path: str | None = None
     media_type: str | None = Field(
@@ -73,7 +74,9 @@ class EntertainmentResponseSchema(EntertainmentBase):
 
 class EntertainmentListResponseSchema(PaginationSchema):
     filter: int | None = None
-    items: list[EntertainmentResponseSchema]
+    items: list[EntertainmentResponseSchema] = Field(
+        default_factory=list, description="List of entertainments."
+    )
 
     model_config = ConfigDict(from_attributes=True)
 

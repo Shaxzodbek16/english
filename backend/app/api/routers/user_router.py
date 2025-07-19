@@ -2,11 +2,7 @@ from fastapi import APIRouter, status, Depends
 
 from app.api.controllers import UserController
 from app.api.models import User
-from app.api.schemas import (
-    UserResponseSchema,
-    UserListResponseSchema,
-    QueryParamsSchema,
-)
+from app.api.schemas import UserResponseSchema
 from app.api.utils.jwt_handler import get_current_user
 
 router = APIRouter(

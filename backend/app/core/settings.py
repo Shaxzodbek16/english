@@ -26,7 +26,6 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
     REDIS_DB: int = 0
 
-
     # JWT CONFIGURATION
     SECRET_KEY: str
     ALGORITHM: str

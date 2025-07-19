@@ -18,16 +18,16 @@ from app.api.schemas import (
 
 class EntertainmentController:
     def __init__(
-            self,
-            entertainment_repo: EntertainmentRepository = Depends(),
-            entertainment_type_repo: EntertainmentTypeRepository = Depends(),
+        self,
+        entertainment_repo: EntertainmentRepository = Depends(),
+        entertainment_type_repo: EntertainmentTypeRepository = Depends(),
     ):
         self.__entertainment_repo = entertainment_repo
         self.__entertainment_type_repo = entertainment_type_repo
         self.__settings: Settings = get_settings()
 
     async def list_(
-            self, query: EntertainmentQuerySchema
+        self, query: EntertainmentQuerySchema
     ) -> EntertainmentListResponseSchema:
         entertainments = await self.__entertainment_repo.list_(query)
         if not entertainments:
@@ -78,7 +78,7 @@ class EntertainmentController:
                 )
 
     async def _upload_to_telegram(
-            self, /, *, media_path: str, media_type: str, caption: str
+        self, /, *, media_path: str, media_type: str, caption: str
     ) -> int | None:
         bot = await get_bot()
         msg_id = None
@@ -150,7 +150,7 @@ class EntertainmentController:
             )
 
     async def post(
-            self, /, *, payload: EntertainmentCreateSchema
+        self, /, *, payload: EntertainmentCreateSchema
     ) -> EntertainmentResponseSchema:
         if payload.type_id is None:
             raise HTTPException(
@@ -169,7 +169,7 @@ class EntertainmentController:
         return EntertainmentResponseSchema.model_validate(entertainment)
 
     async def put(
-            self, entertainment_id: int, payload: EntertainmentUpdate
+        self, entertainment_id: int, payload: EntertainmentUpdate
     ) -> EntertainmentResponseSchema:
         await self._validate_entertainment_type(payload.type_id)
         entertainment = await self.__entertainment_repo.put(entertainment_id, payload)

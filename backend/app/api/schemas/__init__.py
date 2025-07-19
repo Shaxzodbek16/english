@@ -5,3 +5,4 @@ from .level_schema import *
 from .media_schema import *
 from .authentication_schema import *
 from .entertainment_schema import *
+from .question_schema import *

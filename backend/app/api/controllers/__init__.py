@@ -5,3 +5,9 @@ from .level_controller import LevelController
 from .media_controller import MediaController
 from .entertainment_controller import EntertainmentController
 from .entertainment_type_controller import EntertainmentTypeController
+from .question_controller import (
+    OptionController,
+    QuestionController,
+    UserAnswerController,
+    UserQuizResultController,
+)

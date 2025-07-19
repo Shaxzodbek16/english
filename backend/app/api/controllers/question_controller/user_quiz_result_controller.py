@@ -1,0 +1,2 @@
+class UserQuizResultController:
+    pass
