@@ -4,6 +4,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime, UTC
 from typing import TYPE_CHECKING
 
+from sqlalchemy.sql.schema import UniqueConstraint
+
 if TYPE_CHECKING:
     from app.api.models import User, Level
 
@@ -59,7 +61,9 @@ class Question(TimestampMixin):
 
 class Option(TimestampMixin):
     __tablename__ = "options"
-
+    __table_args__ = (
+        UniqueConstraint("question_id", "option", name="uq_question_option"),
+    )
     question_id: Mapped[int] = mapped_column(
         ForeignKey("questions.id"), nullable=False, index=True
     )

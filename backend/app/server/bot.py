@@ -1,4 +1,6 @@
-import logging, sys, asyncio
+import logging
+import sys
+import asyncio
 from aiogram import Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
