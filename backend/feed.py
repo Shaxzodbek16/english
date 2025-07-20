@@ -74,7 +74,7 @@ class FeedService:
     async def feed_questions(self):
         pp = ["question"] * 9
         pp.append("daily")
-        for i in range(1, 1001):
+        for i in range(1, 10001):
             question = models.Question(
                 name=f"Question {i}",
                 picture=self.faker.image_url(),

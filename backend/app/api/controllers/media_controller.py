@@ -1,5 +1,6 @@
-import os, uuid
+import os
 from pathlib import Path
+from datetime import datetime, UTC
 
 from app.api.schemas import MediaSchemaResponse
 from app.core.settings import Settings, get_settings
@@ -31,7 +32,7 @@ class MediaController:
         self, media: UploadFile, *, static: bool = False
     ) -> MediaSchemaResponse:
         file_extension = media.filename.split(".")[-1].lower()
-        media.filename = f"{uuid.uuid4().hex}.{file_extension}"
+        media.filename = f"{datetime.now(UTC)}.{file_extension}"
         if static:
             file_path = self.base_static_dir / media.filename
         else:

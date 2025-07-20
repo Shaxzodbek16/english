@@ -1,5 +1,7 @@
 import os
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.routers import main_router
@@ -17,6 +19,14 @@ def get_app() -> FastAPI:
         description="An AI-powered English learning platform",
         version="1.0.0",
     )
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request, exc):
+        return JSONResponse(
+            status_code=400,
+            content={"detail": exc.errors(), "body": exc.body},
+        )
+
     app.include_router(main_router)
     return app
 

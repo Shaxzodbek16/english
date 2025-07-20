@@ -8,11 +8,13 @@ from app.api.schemas import (
     EntertainmentUpdate,
     EntertainmentQuerySchema,
 )
+from app.api.utils.admin_filter import check_admin
+from app.api.utils.jwt_handler import get_current_user
 
 router = APIRouter(
     prefix="/entertainment",
     tags=["Entertainment"],
-    responses={404: {"description": "Not found"}},
+    dependencies=[Depends(get_current_user)],
 )
 
 

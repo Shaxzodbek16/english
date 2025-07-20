@@ -9,13 +9,15 @@ from sqlalchemy.sql.schema import UniqueConstraint
 if TYPE_CHECKING:
     from app.api.models import User, Level
 
-from app.core.models.base import TimestampMixin
+from app.core.models.base import TimestampMixin, BaseModel
 
 
 class Question(TimestampMixin):
     __tablename__ = "questions"
 
-    name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(
+        String(255), nullable=False, index=True, unique=True
+    )
     picture: Mapped[str | None] = mapped_column(String(255), nullable=True)
     answer: Mapped[str | None] = mapped_column(TEXT, nullable=True, default=None)
     type: Mapped[str] = mapped_column(
@@ -88,7 +90,7 @@ class Option(TimestampMixin):
         return self
 
 
-class UserAnswer(TimestampMixin):
+class UserAnswer(BaseModel):
     __tablename__ = "user_answers"
 
     user_id: Mapped[int] = mapped_column(

@@ -8,6 +8,7 @@ from app.api.utils.jwt_handler import get_current_user
 router = APIRouter(
     prefix="/user",
     tags=["User"],
+    dependencies=[Depends(get_current_user)],
 )
 
 
@@ -23,7 +24,6 @@ async def me(
     "/phone/{phone_number}",
     response_model=UserResponseSchema,
     status_code=status.HTTP_200_OK,
-    dependencies=[Depends(get_current_user)],
 )
 async def get_user(phone_number: int, user_controller: UserController = Depends()):
     return await user_controller.get(phone_number=phone_number)

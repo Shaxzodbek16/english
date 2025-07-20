@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, ConfigDict, model_validator
 from datetime import datetime
 from fastapi import HTTPException, status
 
-from app.api.schemas.pagination import PaginationSchema
+from app.api.schemas.pagination import PaginationSchema, QueryParamsSchema
 from app.api.schemas.question_schema.option_schema import OptionResponseSchema
 
 
@@ -22,11 +22,20 @@ class QuestionCreateSchema(QuestionBase):
         self,
     ):
         if self.name is None or self.name.strip() == "":
-            raise ValueError("Name cannot be empty for question field")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Name must be provided and cannot be empty.",
+            )
         if self.level_id is None:
-            raise ValueError("Level ID must be provided")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Level ID must be provided",
+            )
         if self.theme_id is None:
-            raise ValueError("Theme ID must be provided")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Theme ID must be provided",
+            )
         if self.type not in [
             "question",
             "daily",
@@ -40,10 +49,8 @@ class QuestionCreateSchema(QuestionBase):
 
 class QuestionUpdateSchema(QuestionBase):
     @model_validator(mode="after")
-    def validate_fields(
-        self,
-    ):
-        if any(
+    def validate_fields(self):
+        if not any(
             [
                 self.name,
                 self.picture,
@@ -72,3 +79,22 @@ class QuestionListResponseSchema(PaginationSchema):
         default_factory=list,
         description="List of questions.",
     )
+
+
+class QuestionQueryParamSchema(QueryParamsSchema):
+    level_id: int | None = None
+    theme_id: int | None = None
+
+    @model_validator(mode="after")
+    def validate_fields(self) -> "QuestionQueryParamSchema":
+        if self.level_id is not None and self.level_id < 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Level ID must be greater than or equal to 1.",
+            )
+        if self.theme_id is not None and self.theme_id < 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Theme ID must be greater than or equal to 1.",
+            )
+        return self

@@ -2,11 +2,13 @@ from fastapi import Depends, APIRouter, status
 
 from app.api.controllers import EntertainmentTypeController
 from app.api.schemas import EntertainmentTypesSchema, EntertainmentTypesResponseSchema
+from app.api.utils.admin_filter import check_admin
 
 router = APIRouter(
     prefix="/entertainment-type",
     tags=["Entertainment Type"],
     responses={404: {"description": "Not found"}},
+    dependencies=[Depends(check_admin)],
 )
 
 
