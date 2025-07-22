@@ -7,5 +7,5 @@ from .question_repository import (
     OptionRepository,
     QuestionRepository,
     UserAnswerRepository,
-    UserQuizResultRepository,
+    UserQuestionResultRepository,
 )

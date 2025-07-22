@@ -9,5 +9,5 @@ from .question_controller import (
     OptionController,
     QuestionController,
     UserAnswerController,
-    UserQuizResultController,
+    UserQuestionResultController,
 )
