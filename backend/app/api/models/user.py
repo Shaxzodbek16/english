@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy import String, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime, UTC
+from datetime import datetime, UTC, date
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -60,3 +60,7 @@ class User(TimestampMixin):
             "phone_number": self.phone_number,
             "is_admin": self.is_admin,
         }
+
+    @property
+    def get_created_time(self) -> date:
+        return self.created_at.date()

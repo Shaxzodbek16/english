@@ -94,3 +94,16 @@ class OptionRepository:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=str(e),
             )
+
+    async def check_answer(self, question_id: int, option_id: int) -> bool:
+        stmt = select(Option).where(
+            Option.question_id == question_id, Option.id == option_id
+        )
+        result = await self.__session.execute(stmt)
+        option = result.scalar_one_or_none()
+        if option is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Option not found for the given question.",
+            )
+        return option.is_correct

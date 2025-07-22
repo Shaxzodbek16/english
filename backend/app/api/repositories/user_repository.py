@@ -25,6 +25,10 @@ class UserRepository:
         )
         return user.scalar_one_or_none()
 
+    async def get_by_id(self, user_id: int) -> User | None:
+        user = await self.__session.execute(select(User).where(User.id == user_id))
+        return user.scalar_one_or_none()
+
     async def list(self, params: QueryParamsSchema) -> Sequence[User]:
         stmt = select(User)
         if params.filter:

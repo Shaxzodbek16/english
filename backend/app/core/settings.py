@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     # BOT CONFIGURATION
     BOT_TOKEN: str
     TG_CHANNEL_ID: int
+    TELEGRAM_STATE_DB: int
 
     # POSTGRES CREDENTIALS
     POSTGRES_USER: str

@@ -11,7 +11,7 @@ from app.core.settings import get_settings, Settings
 settings: Settings = get_settings()
 
 storage = RedisStorage.from_url(
-    f"redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/{settings.REDIS_DB + 1}"
+    f"redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/{settings.TELEGRAM_STATE_DB}"
 )
 
 dp = Dispatcher(storage=storage)

@@ -9,7 +9,7 @@ from app.api.models import Question
 from app.api.schemas import (
     QuestionCreateSchema,
     QuestionUpdateSchema,
-    QueryParamsSchema,
+    QuestionQueryParamSchema,
 )
 from app.core.databases.postgres import get_general_session
 
@@ -21,7 +21,7 @@ class QuestionRepository:
     ):
         self.__session = session
 
-    async def list_(self, query: QueryParamsSchema) -> Sequence[Question]:
+    async def list_(self, query: QuestionQueryParamSchema) -> Sequence[Question]:
         stmt = select(Question)
         if query.search:
             stmt = stmt.where(Question.name.ilike(f"%{query.search}%"))

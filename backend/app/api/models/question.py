@@ -1,15 +1,16 @@
 from __future__ import annotations
 from sqlalchemy import String, TEXT, Boolean, Integer, BigInteger, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime, UTC
+from sqlalchemy.sql.schema import UniqueConstraint
+from sqlalchemy.dialects.postgresql import JSON
+from datetime import datetime, UTC,date
 from typing import TYPE_CHECKING
 
-from sqlalchemy.sql.schema import UniqueConstraint
 
 if TYPE_CHECKING:
     from app.api.models import User, Level
 
-from app.core.models.base import TimestampMixin, BaseModel
+from app.core.models.base import TimestampMixin
 
 
 class Question(TimestampMixin):
@@ -90,7 +91,7 @@ class Option(TimestampMixin):
         return self
 
 
-class UserAnswer(BaseModel):
+class UserAnswer(TimestampMixin):
     __tablename__ = "user_answers"
 
     user_id: Mapped[int] = mapped_column(
@@ -123,7 +124,8 @@ class UserAnswer(BaseModel):
         return self
 
 
-class UserQuizResult(TimestampMixin):
+
+class UserQuestionResult(TimestampMixin):
     __tablename__ = "user_quiz_results"
 
     user_id: Mapped[int] = mapped_column(
@@ -131,6 +133,7 @@ class UserQuizResult(TimestampMixin):
     )
     question_id: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
     score: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    questions: Mapped[list] = mapped_column(JSON, nullable=False, default=[])
 
     # relationships
     user: Mapped[User] = relationship("User", back_populates="results")
@@ -148,3 +151,6 @@ class UserQuizResult(TimestampMixin):
                     setattr(self, key, value)
         setattr(self, "updated_at", datetime.now(UTC))
         return self
+
+    def get_created_date(self)->date:
+        return self.created_at.date()

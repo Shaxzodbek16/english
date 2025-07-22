@@ -12,7 +12,7 @@ def get_random_int(start: int, stop: int):
 
 
 def get_random_element(
-    elements: MutableSequence,
+        elements: MutableSequence,
 ):
     random.shuffle(elements)
     return random.choice(list(elements))
@@ -24,13 +24,41 @@ class FeedService:
     sections = set()
     questions = set()
     options = set()
+    questions_options = dict()
+    users = set()
+    user_answers = set()
+
+    async def feed_users(self):
+        seen = set()
+        for i in range(1, 10001):
+            random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
+            while random_tg_id in seen:
+                random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
+            user = models.User(
+                first_name=self.faker.first_name(),
+                last_name=self.faker.last_name(),
+                telegram_id=random_tg_id,
+                language="ru",
+                phone_number=self.faker.random_int(min=1000000000, max=9999999999),
+                is_admin=self.faker.boolean(chance_of_getting_true=1),
+                created_at=self.faker.date_time_between(
+                    start_date="-1y", end_date="now"
+                ),
+                updated_at=self.faker.date_time_between(
+                    start_date="-1y", end_date="now"
+                )
+            )
+            self.session.add(user)
+            self.users.add(user)
+            seen.add(random_tg_id)
+        await self.session.commit()
 
     def __init__(self, session: AsyncSession):
         self.session = session
         self.faker: Faker = Faker()
 
     async def feed_level(
-        self,
+            self,
     ):
         for l, th, s in zip(range(1, 5), range(1, 5), range(1, 5)):
             level = models.Level(
@@ -95,6 +123,7 @@ class FeedService:
 
     async def feed_options(self):
         for question in self.questions:
+            a = []
             for i in range(4):
                 option = models.Option(
                     question_id=question.id,
@@ -109,15 +138,41 @@ class FeedService:
                 )
                 self.session.add(option)
                 self.options.add(option)
+                a.append(option)
+            self.questions_options[question.id] = a.copy()
+            a.clear()
+        await self.session.commit()
+
+    async def feed_user_answers(self):
+        for i in range(1, 10001):
+            user = get_random_element(list(self.users))
+            question = get_random_element(list(self.questions))
+            option = get_random_element(self.questions_options[question.id])
+            user_answer = models.UserAnswer(
+                user_id=user.id,
+                question_id=question.id,
+                option_id=option.id,
+                created_at=self.faker.date_time_between(
+                    start_date="-3y", end_date="now"
+                ),
+                updated_at=self.faker.date_time_between(
+                    start_date="-3y", end_date="now"
+                ),
+            )
+            self.session.add(user_answer)
+            self.user_answers.add(user_answer)
         await self.session.commit()
 
 
 async def main():
     async with get_session_without_depends() as session:
         feed_service = FeedService(session)
+        await feed_service.feed_users()
         await feed_service.feed_level()
         await feed_service.feed_questions()
         await feed_service.feed_options()
+        await asyncio.sleep(1)
+        await feed_service.feed_user_answers()
 
 
 if __name__ == "__main__":
