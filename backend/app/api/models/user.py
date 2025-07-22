@@ -5,7 +5,7 @@ from datetime import datetime, UTC, date
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from app.api.models import UserAnswer, UserQuizResult, Setting
+    from app.api.models import UserAnswer, UserQuestionResult, Setting
 
 from app.core.models.base import TimestampMixin
 from app.core.settings import get_settings, Settings
@@ -32,8 +32,8 @@ class User(TimestampMixin):
     answers: Mapped[list["UserAnswer"]] = relationship(
         "UserAnswer", back_populates="user", cascade="all, delete-orphan"
     )
-    results: Mapped[list["UserQuizResult"]] = relationship(
-        "UserQuizResult", back_populates="user", cascade="all, delete-orphan"
+    results: Mapped[list["UserQuestionResult"]] = relationship(
+        "UserQuestionResult", back_populates="user", cascade="all, delete-orphan"
     )
     settings: Mapped[list["Setting"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

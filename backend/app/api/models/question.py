@@ -139,12 +139,12 @@ class UserQuestionResult(TimestampMixin):
     user: Mapped[User] = relationship("User", back_populates="results")
 
     def __repr__(self):
-        return f"<UserQuizResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})>"
+        return f"<UserQuestionResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})>"
 
     def __str__(self):
-        return f"UserQuizResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})"
+        return f"UserQuestionResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})"
 
-    def update(self, data: dict) -> "UserQuizResult":
+    def update(self, data: dict) -> "UserQuestionResult":
         for key, value in data.items():
             if hasattr(self, key):
                 if value is not None:
