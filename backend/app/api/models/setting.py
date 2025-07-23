@@ -23,7 +23,7 @@ class Setting(BaseModel):
     # relationships
     user: Mapped["User"] = relationship(back_populates="settings")
 
-    settings: Mapped[dict] = mapped_column(JSONB)
+    settings: Mapped[dict] = mapped_column(JSONB, default={}, nullable=False)
 
     def __repr__(self):
         return f"<Setting(id={self.id}, settings={self.settings})>"

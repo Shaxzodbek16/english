@@ -32,9 +32,6 @@ class User(TimestampMixin):
     answers: Mapped[list["UserAnswer"]] = relationship(
         "UserAnswer", back_populates="user", cascade="all, delete-orphan"
     )
-    results: Mapped[list["UserQuestionResult"]] = relationship(
-        "UserQuestionResult", back_populates="user", cascade="all, delete-orphan"
-    )
     settings: Mapped[list["Setting"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )

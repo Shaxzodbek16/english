@@ -1,7 +1,8 @@
+import random
+import json
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from faker import Faker
 from typing import MutableSequence
-import random
 
 from app.core.databases.postgres import get_session_without_depends
 from app.api import models
@@ -30,7 +31,7 @@ class FeedService:
 
     async def feed_users(self):
         seen = set()
-        for i in range(1, 10001):
+        for i in range(1, 10):
             random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
             while random_tg_id in seen:
                 random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
@@ -163,6 +164,34 @@ class FeedService:
             self.user_answers.add(user_answer)
         await self.session.commit()
 
+    async def feed_setting(self):
+        for user in self.users:
+            settings_data = {
+                "theme": "dark" if self.faker.boolean(chance_of_getting_true=50) else "light",
+                "notifications_sound": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_vibration": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_push": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_email": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_sms": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_in_app": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_push_daily_question": self.faker.boolean(chance_of_getting_true=50),
+                "language": user.language,
+                "notifications": {
+                    "daily_question": self.faker.boolean(chance_of_getting_true=50),
+                    "weekly_summary": self.faker.boolean(chance_of_getting_true=50),
+                    "monthly_summary": self.faker.boolean(chance_of_getting_true=50),
+                },
+            }
+            json_str = json.dumps(settings_data)
+            safe_settings = json.loads(json_str)
+            setting = models.Setting(
+                user_id=user.id,
+                settings=safe_settings,
+            )
+            self.session.add(setting)
+
+        await self.session.commit()
+
 
 async def main():
     async with get_session_without_depends() as session:
@@ -171,8 +200,9 @@ async def main():
         await feed_service.feed_level()
         await feed_service.feed_questions()
         await feed_service.feed_options()
-        await asyncio.sleep(1)
+
         await feed_service.feed_user_answers()
+        await feed_service.feed_setting()
 
 
 if __name__ == "__main__":

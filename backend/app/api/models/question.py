@@ -122,35 +122,3 @@ class UserAnswer(TimestampMixin):
                     setattr(self, key, value)
         setattr(self, "updated_at", datetime.now(UTC))
         return self
-
-
-
-class UserQuestionResult(TimestampMixin):
-    __tablename__ = "user_quiz_results"
-
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
-    )
-    question_id: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
-    score: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
-    questions: Mapped[list] = mapped_column(JSON, nullable=False, default=[])
-
-    # relationships
-    user: Mapped[User] = relationship("User", back_populates="results")
-
-    def __repr__(self):
-        return f"<UserQuestionResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})>"
-
-    def __str__(self):
-        return f"UserQuestionResult(user_id={self.user_id}, question_id={self.question_id}, score={self.score})"
-
-    def update(self, data: dict) -> "UserQuestionResult":
-        for key, value in data.items():
-            if hasattr(self, key):
-                if value is not None:
-                    setattr(self, key, value)
-        setattr(self, "updated_at", datetime.now(UTC))
-        return self
-
-    def get_created_date(self)->date:
-        return self.created_at.date()

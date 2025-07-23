@@ -10,6 +10,7 @@ from .media_router import router as media_router
 from .entertainment_router import router as entertainment_router
 from .entertainment_type_router import router as entertainment_type_router
 from .questions import router as questions_router
+from .settings_router import router as settings_router
 
 settings: Settings = get_settings()
 
@@ -27,5 +28,6 @@ main_router.include_router(media_router)
 main_router.include_router(entertainment_router)
 main_router.include_router(entertainment_type_router)
 main_router.include_router(questions_router)
+main_router.include_router(settings_router)
 
 __all__ = ["main_router"]

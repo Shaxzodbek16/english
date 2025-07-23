@@ -68,7 +68,7 @@ class UserListResponseSchema(PaginationSchema):
                 "telegram_id",
                 "phone_number",
             ]
-            if self.search_field and self.search_field not in valid_search_fields:
+            if self.search and self.search not in valid_search_fields:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=f"Invalid search field. Valid search fields are: {', '.join(valid_search_fields)}",

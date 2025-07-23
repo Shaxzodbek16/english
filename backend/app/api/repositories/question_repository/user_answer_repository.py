@@ -68,3 +68,11 @@ class UserAnswerRepository:
         )
         result = await self.__session.execute(stmt)
         return result.scalar_one()
+
+    async def get_option_by_question_id(self, question_id: int, user_id: int) -> UserAnswer | None:
+        stmt = select(UserAnswer).where(
+            UserAnswer.question_id == question_id,
+            UserAnswer.user_id == user_id
+        )
+        result = await self.__session.execute(stmt)
+        return result.scalar_one_or_none()
