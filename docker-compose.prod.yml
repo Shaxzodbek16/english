@@ -38,8 +38,8 @@ services:
       - backend/.env
     volumes:
       - ./backend:/app
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -76,8 +76,8 @@ services:
     env_file:
       - frontend/.env
     restart: always
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
     volumes:
       - ./frontend:/app
     command: npm run start

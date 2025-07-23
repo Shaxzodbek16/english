@@ -21,23 +21,17 @@ def get_app() -> FastAPI:
         docs_url="/docs/",
     )
 
-    @app.exception_handler(RequestValidationError)
-    async def validation_exception_handler(request, exc):
-        return JSONResponse(
-            status_code=400,
-            content={"detail": exc.errors(), "body": exc.body},
-        )
-
     app.include_router(main_router)
     return app
 
 
-def create_app() -> CORSMiddleware:
+def create_app() -> FastAPI:
     app = get_app()
-    return CORSMiddleware(
-        app,
+    app.add_middleware(
+        CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    return app
