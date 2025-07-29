@@ -18,7 +18,7 @@ def get_app() -> FastAPI:
         title="EnglishAI",
         description="An AI-powered English learning platform",
         version="1.0.0",
-        docs_url="/docs/",
+        docs_url="/api/docs/",
     )
 
     app.include_router(main_router)

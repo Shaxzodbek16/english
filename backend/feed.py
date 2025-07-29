@@ -13,7 +13,7 @@ def get_random_int(start: int, stop: int):
 
 
 def get_random_element(
-        elements: MutableSequence,
+    elements: MutableSequence,
 ):
     random.shuffle(elements)
     return random.choice(list(elements))
@@ -34,7 +34,9 @@ class FeedService:
         for i in range(1, 10):
             random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
             while random_tg_id in seen:
-                random_tg_id = self.faker.unique.random_int(min=100000000, max=999999999)
+                random_tg_id = self.faker.unique.random_int(
+                    min=100000000, max=999999999
+                )
             user = models.User(
                 first_name=self.faker.first_name(),
                 last_name=self.faker.last_name(),
@@ -47,7 +49,7 @@ class FeedService:
                 ),
                 updated_at=self.faker.date_time_between(
                     start_date="-1y", end_date="now"
-                )
+                ),
             )
             self.session.add(user)
             self.users.add(user)
@@ -59,7 +61,7 @@ class FeedService:
         self.faker: Faker = Faker()
 
     async def feed_level(
-            self,
+        self,
     ):
         for l, th, s in zip(range(1, 5), range(1, 5), range(1, 5)):
             level = models.Level(
@@ -167,14 +169,20 @@ class FeedService:
     async def feed_setting(self):
         for user in self.users:
             settings_data = {
-                "theme": "dark" if self.faker.boolean(chance_of_getting_true=50) else "light",
+                "theme": (
+                    "dark" if self.faker.boolean(chance_of_getting_true=50) else "light"
+                ),
                 "notifications_sound": self.faker.boolean(chance_of_getting_true=50),
-                "notifications_vibration": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_vibration": self.faker.boolean(
+                    chance_of_getting_true=50
+                ),
                 "notifications_push": self.faker.boolean(chance_of_getting_true=50),
                 "notifications_email": self.faker.boolean(chance_of_getting_true=50),
                 "notifications_sms": self.faker.boolean(chance_of_getting_true=50),
                 "notifications_in_app": self.faker.boolean(chance_of_getting_true=50),
-                "notifications_push_daily_question": self.faker.boolean(chance_of_getting_true=50),
+                "notifications_push_daily_question": self.faker.boolean(
+                    chance_of_getting_true=50
+                ),
                 "language": user.language,
                 "notifications": {
                     "daily_question": self.faker.boolean(chance_of_getting_true=50),

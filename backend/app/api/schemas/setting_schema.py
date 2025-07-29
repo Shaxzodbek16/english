@@ -11,7 +11,7 @@ class SettingSchema(BaseModel):
 
 
 class SettingCreateSchema(SettingSchema):
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def validate_settings(self):
         if self.settings is None or not isinstance(self.settings, dict):
             raise HTTPException(

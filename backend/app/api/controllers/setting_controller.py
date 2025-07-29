@@ -1,6 +1,10 @@
 from fastapi import Depends, status, HTTPException
 
-from app.api.schemas import SettingResponseSchema, SettingCreateSchema, SettingUpdateSchema
+from app.api.schemas import (
+    SettingResponseSchema,
+    SettingCreateSchema,
+    SettingUpdateSchema,
+)
 from app.api.repositories import SettingRepository
 
 
@@ -13,14 +17,18 @@ class SettingController:
         if not setting:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Settings not found for the user."
+                detail="Settings not found for the user.",
             )
         return SettingResponseSchema.model_validate(setting)
 
-    async def post(self, user_id: int, payload: SettingCreateSchema) -> SettingResponseSchema:
+    async def post(
+        self, user_id: int, payload: SettingCreateSchema
+    ) -> SettingResponseSchema:
         setting = await self.setting_repository.post(payload, user_id)
         return SettingResponseSchema.model_validate(setting)
 
-    async def put(self, user_id: int, payload: SettingUpdateSchema) -> SettingResponseSchema:
+    async def put(
+        self, user_id: int, payload: SettingUpdateSchema
+    ) -> SettingResponseSchema:
         setting = await self.setting_repository.put(payload, user_id)
         return SettingResponseSchema.model_validate(setting)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, model_validator, ConfigDict
 from fastapi import HTTPException, status
-from datetime import date,datetime
+from datetime import date, datetime
 
 
 class UserAnswerBase(BaseModel):
@@ -74,7 +74,9 @@ class UserAnswerQuery(BaseModel):
 class UserAnswerListResponseSchema(UserAnswerQuery):
     total: int = Field(default=0, description="Total number of user answers")
     correct_answers: int = Field(default=0, description="Number of correct answers")
-    total_questions: int = Field(default=0, description="Total number of questions answered")
+    total_questions: int = Field(
+        default=0, description="Total number of questions answered"
+    )
     accuracy: float = Field(default=0.0, description="Accuracy of the user's answers")
     user_answers: list[UserAnswerResponseSchema] = Field(
         default_factory=list, description="List of user answers"
